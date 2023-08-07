@@ -1,7 +1,19 @@
 .App {
+  height: 100%;
   text-align: center;
   a {
     text-decoration: none;
     color: inherit;
   }
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 防止页面出现滚动条 */
+}
+
+body > #root {
+  height: 100%;
 }
