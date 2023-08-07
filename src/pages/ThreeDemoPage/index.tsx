@@ -1,33 +1,55 @@
-import { useRef, useState } from "react";
+import { Suspense, useRef, useState } from "react";
+import { useSpring, animated } from "@react-spring/three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Sphere, Box, OrbitControls } from "@react-three/drei";
+import {
+  Box,
+  Sphere,
+  Cone,
+  OrbitControls,
+  Plane,
+  Circle,
+  Cylinder,
+  Torus,
+  Dodecahedron,
+  Text,
+} from "@react-three/drei";
+import { Mesh } from "three";
 import "./index.less";
+import Loader from "./components/Loader";
 
 const ThreeDemoPage = () => {
   const [active, setActive] = useState(false);
+  const { scale } = useSpring({ scale: active ? 1.5 : 1 });
   const RotatingBox = () => {
-    const myMesh = useRef<any>(null);
+    const myMesh = useRef<Mesh>(null!);
     useFrame(({ clock }) => {
       const a = clock.getElapsedTime();
-      myMesh.current.rotation.x = a;
+      myMesh.current.rotation.x = Math.sin(a) / 4;
     });
     return (
-      <mesh
-        scale={active ? 1.5 : 1}
+      <animated.mesh
+        scale={scale}
         onClick={() => setActive(!active)}
         ref={myMesh}
       >
         <OrbitControls enableDamping enablePan enableRotate enableZoom />
-        <Box args={[1, 1, 1]} material-color="royalblue" />
-      </mesh>
+        <Sphere position={[0, 0, -3]}>
+          <meshNormalMaterial />
+          <Text position={[0, 0, 1]} fontSize={0.3} color="white">
+            Three.js
+          </Text>
+        </Sphere>
+      </animated.mesh>
     );
   };
   return (
     <div className="ThreeDemoPage">
       <Canvas>
-        <RotatingBox />
-        <ambientLight intensity={0.2} />
-        <directionalLight position={[0, 2, 10]} />
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[-2, 5, 2]} color="red" />
+        <Suspense fallback={<Loader />}>
+          <RotatingBox />
+        </Suspense>
       </Canvas>
     </div>
   );
