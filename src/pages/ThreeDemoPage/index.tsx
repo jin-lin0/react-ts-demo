@@ -12,10 +12,13 @@ import {
   Torus,
   Dodecahedron,
   Text,
+  Text3D,
+  Stars,
 } from "@react-three/drei";
 import { Mesh } from "three";
 import "./index.less";
 import Loader from "./components/Loader";
+import { textGeoMetryConfig } from "../../config/threeConfig";
 
 const ThreeDemoPage = () => {
   const [active, setActive] = useState(false);
@@ -24,7 +27,7 @@ const ThreeDemoPage = () => {
     const myMesh = useRef<Mesh>(null!);
     useFrame(({ clock }) => {
       const a = clock.getElapsedTime();
-      myMesh.current.rotation.x = Math.sin(a) / 4;
+      myMesh.current.rotation.x = Math.sin(a) / 4; //绕x轴旋转
     });
     return (
       <animated.mesh
@@ -33,22 +36,35 @@ const ThreeDemoPage = () => {
         ref={myMesh}
       >
         <OrbitControls enableDamping enablePan enableRotate enableZoom />
-        <Sphere position={[0, 0, -3]}>
+        <Sphere position={[0, 0, -1]}>
           <meshNormalMaterial />
-          <Text position={[0, 0, 1]} fontSize={0.3} color="white">
-            Three.js
-          </Text>
+          <Text3D
+            font={process.env.PUBLIC_URL + "/xingkai.json"}
+            position={[-0.5, 0, 1]}
+            {...textGeoMetryConfig}
+          >
+            Three
+          </Text3D>
         </Sphere>
       </animated.mesh>
     );
   };
   return (
     <div className="ThreeDemoPage">
-      <Canvas>
+      <Canvas style={{ background: "black" }}>
         <ambientLight intensity={0.6} />
         <directionalLight position={[-2, 5, 2]} color="red" />
         <Suspense fallback={<Loader />}>
           <RotatingBox />
+          <Stars
+            radius={100}
+            depth={50}
+            count={5000}
+            factor={4} //亮度
+            saturation={1} //饱和度
+            fade
+            speed={1}
+          />
         </Suspense>
       </Canvas>
     </div>
