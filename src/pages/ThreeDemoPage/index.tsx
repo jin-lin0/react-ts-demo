@@ -39,7 +39,7 @@ const ThreeDemoPage = () => {
         <Sphere position={[0, 0, -1]}>
           <meshNormalMaterial />
           <Text3D
-            font={process.env.PUBLIC_URL + "/xingkai.json"}
+            font={process.env.PUBLIC_URL + "/xingkai-min.json"}
             position={[-0.5, 0, 1]}
             {...textGeoMetryConfig}
           >
