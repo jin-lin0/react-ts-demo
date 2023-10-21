@@ -1,26 +1,13 @@
 import { Suspense, useRef, useState } from "react";
 import { useSpring, animated } from "@react-spring/three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  Box,
-  Sphere,
-  Cone,
-  OrbitControls,
-  Plane,
-  Circle,
-  Cylinder,
-  Torus,
-  Dodecahedron,
-  Text,
-  Text3D,
-  Stars,
-} from "@react-three/drei";
+import { Sphere, OrbitControls, Text3D, Stars } from "@react-three/drei";
 import { Mesh } from "three";
 import "./index.less";
 import Loader from "./components/Loader";
 import { textGeoMetryConfig } from "../../config/threeConfig";
 
-const ThreeDemoPage = () => {
+const DemoThreePage = () => {
   const [active, setActive] = useState(false);
   const { scale } = useSpring({ scale: active ? 1.5 : 1 });
   const RotatingBox = () => {
@@ -50,7 +37,7 @@ const ThreeDemoPage = () => {
     );
   };
   return (
-    <div className="ThreeDemoPage">
+    <div className="DemoThreePage">
       <Canvas style={{ background: "black" }}>
         <ambientLight intensity={0.6} />
         <directionalLight position={[-2, 5, 2]} color="red" />
@@ -70,4 +57,4 @@ const ThreeDemoPage = () => {
     </div>
   );
 };
-export default ThreeDemoPage;
+export default DemoThreePage;

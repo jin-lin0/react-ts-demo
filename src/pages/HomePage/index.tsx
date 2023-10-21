@@ -1,14 +1,28 @@
 import { Link } from "react-router-dom";
-import { Card } from "antd";
 import "./index.less";
 const HomePage = () => {
+  const CardArr = [
+    {
+      name: "Three Demo",
+      linkTo: "/demo/three",
+    },
+    {
+      name: "Chat Demo",
+      linkTo: "/demo/chat",
+    },
+  ];
+  const generateCards = (cards: any) => (
+    <>
+      {cards.map((card: any) => (
+        <Link to={card.linkTo}>
+          <div className="HomePage-Card">{card.name}</div>
+        </Link>
+      ))}
+    </>
+  );
   return (
     <div className="HomePage">
-      <nav>
-        <Link to="/demo/three" style={{ textDecoration: "none" }}>
-          <Card title="Three Demo"></Card>
-        </Link>
-      </nav>
+      <nav>{generateCards(CardArr)}</nav>
     </div>
   );
 };

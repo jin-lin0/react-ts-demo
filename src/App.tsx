@@ -1,5 +1,6 @@
 import "./App.css";
-import ThreeDemoPage from "./pages/ThreeDemoPage";
+import DemoChatPage from "./pages/DemoChatPage";
+import DemoThreePage from "./pages/DemoThereePage";
 import HomePage from "./pages/HomePage";
 import { Route, Routes } from "react-router-dom";
 
@@ -8,7 +9,8 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="demo">
-          <Route path="three" element={<ThreeDemoPage />} />
+          <Route path="three" element={<DemoThreePage />} />
+          <Route path="chat" element={<DemoChatPage />} />
         </Route>
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<HomePage />} />
