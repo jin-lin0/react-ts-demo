@@ -5,7 +5,7 @@ import api from "../../api";
 import { Modal, Input, Form, Button } from "antd";
 const DemoChatPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [message, setMessage] = useState<String>();
+  const [message, setMessage] = useState<string>("");
   const [response, setResponse] = useState("Hi,I'm your assistant.");
 
   useEffect(() => {
@@ -85,6 +85,7 @@ const DemoChatPage = () => {
       <div className="chat-message">
         <input
           className="chat-message-input"
+          value={message}
           type="text"
           onChange={handleInputChange}
         />
