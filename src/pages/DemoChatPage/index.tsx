@@ -23,11 +23,13 @@ const DemoChatPage = () => {
   const handleApikeySubmit = (values: any) => {
     console.log(values);
     for (const key in values) {
-      if (values.hasOwnProperty(key)) {
+      if (values.hasOwnProperty(key) && /^[\x00-\xFF]+$/.test(values[key])) {
         Cookies.set(key, values[key], { expires: 1 });
+        setIsModalOpen(false);
+      } else {
+        setResponse("Invalid input.");
       }
     }
-    setIsModalOpen(false);
   };
 
   const handleSubmit = async () => {
@@ -54,11 +56,9 @@ const DemoChatPage = () => {
       setResponse(res.data.choices[0].message.content);
       return res;
     } catch (e: any) {
-      if (e.response.status === 401) {
-        setResponse("Authorization Error.");
-        Cookies.remove("Authorization");
-        setIsModalOpen(true);
-      }
+      setResponse("Authorization Error.");
+      Cookies.remove("Authorization");
+      setIsModalOpen(true);
     }
   };
   return (
