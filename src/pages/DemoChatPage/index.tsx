@@ -1,12 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import "./index.less";
 import api from "../../api";
+import { Modal, Input, Form, Button } from "antd";
 const DemoChatPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [message, setMessage] = useState<String>();
-  const [response, setResponse] = useState("Hi");
+  const [response, setResponse] = useState("Hi,I'm your assistant.");
+
+  useEffect(() => {
+    const authorization = Cookies.get("Authorization");
+    console.log(authorization);
+    if (!authorization) {
+      setIsModalOpen(true);
+    }
+  }, []);
 
   const handleInputChange = (e: any) => {
     setMessage(e.target.value);
+  };
+
+  const handleApikeySubmit = (values: any) => {
+    console.log(values);
+    for (const key in values) {
+      if (values.hasOwnProperty(key)) {
+        Cookies.set(key, values[key], { expires: 1 });
+      }
+    }
+    setIsModalOpen(false);
   };
 
   const handleSubmit = async () => {
@@ -22,9 +43,23 @@ const DemoChatPage = () => {
       ],
       temperature: 0.7,
     };
-    const res = await api.getMessageResponse(data);
-    setResponse(res.data.choices[0].message.content);
-    return res;
+    try {
+      const authorization = Cookies.get("Authorization");
+      const config = {
+        headers: {
+          Authorization: authorization,
+        },
+      };
+      const res = await api.getMessageResponse(data, config);
+      setResponse(res.data.choices[0].message.content);
+      return res;
+    } catch (e: any) {
+      if (e.response.status === 401) {
+        setResponse("Authorization Error.");
+        Cookies.remove("Authorization");
+        setIsModalOpen(true);
+      }
+    }
   };
   return (
     <div className="DemoChatPage">
@@ -57,6 +92,18 @@ const DemoChatPage = () => {
           send
         </div>
       </div>
+      <Modal title="Input your APIKEY" open={isModalOpen} footer={null}>
+        <Form onFinish={handleApikeySubmit}>
+          <Form.Item name="Authorization">
+            <Input placeholder="input your apikey" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
