@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./index.less";
+import CanvasStar from "./components/CanvasStar";
 const HomePage = () => {
   const CardArr = [
     {
@@ -22,6 +23,7 @@ const HomePage = () => {
   );
   return (
     <div className="HomePage">
+      <CanvasStar />
       <nav>{generateCards(CardArr)}</nav>
     </div>
   );
